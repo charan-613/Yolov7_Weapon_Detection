@@ -1,0 +1,136 @@
+<!-- webcam.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Prediction</title>
+    <link rel="stylesheet" href="/static/styles3.css">
+    <style>
+        #webcam-feed {
+            position: relative;
+        }
+
+        .bounding-box {
+            position: absolute;
+            border: 2px solid red;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Webcam Detection</h1>
+    </header>
+
+    <nav>
+        <a href="index_home.html">Home</a>
+        <div class="dropdown">
+            <a href="#">Predict</a>
+            <div class="dropdown-content">
+                <a href="image_detection.html">Image</a>
+                <a href="#">Video</a>
+            </div>
+        </div>
+    </nav>
+
+    <button id="start-button" onClick="startWebcam()">Start Webcam</button>
+    <button id="stop-button" style="display: none;" onClick="stopWebcam()">Stop Webcam</button>
+
+    <video id="webcam-feed" autoplay></video>
+
+    <script>
+        const video = document.getElementById('webcam-feed');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+        let stream;
+
+        function startWebcam() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((videoStream) => {
+                    stream = videoStream;
+                    video.srcObject = videoStream;
+                    startButton.style.display = 'none';
+                    stopButton.style.display = 'block';
+
+                    // Start capturing and sending frames
+                    captureAndSendFrames();
+                })
+                .catch((error) => {
+                    console.error('Error accessing webcam:', error);
+                });
+        }
+
+        function stopWebcam() {
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+                startButton.style.display = 'block';
+                stopButton.style.display = 'none';
+            }
+        }
+
+        function captureAndSendFrames() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            // Adjust canvas dimensions based on video feed
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            const captureInterval = setInterval(() => {
+                // Draw current video frame on the canvas
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Get the frame as a base64-encoded JPEG image
+                const frameData = canvas.toDataURL('image/jpeg');
+
+                // Send the frame to the Flask endpoint for detection
+                fetch('/detect_webcam', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ frame: frameData }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Process the detection results and display bounding boxes
+                    displayBoundingBoxes(data);
+                })
+                .catch(error => {
+                    console.error('Error sending frame for detection:', error);
+                });
+            }, 1000); // Adjust the interval as needed
+
+            // Stop capturing frames when the Stop Webcam button is clicked
+            stopButton.addEventListener('click', () => {
+                clearInterval(captureInterval);
+            });
+        }
+
+        function displayBoundingBoxes(data) {
+            // Clear previous bounding boxes
+            const existingBoundingBoxes = document.querySelectorAll('.bounding-box');
+            existingBoundingBoxes.forEach(box => box.remove());
+
+            // Display new bounding boxes
+            data.forEach(box => {
+                const boundingBox = document.createElement('div');
+                boundingBox.className = 'bounding-box';
+                boundingBox.style.left = `${box.x * 100}%`;
+                boundingBox.style.top = `${box.y * 100}%`;
+                boundingBox.style.width = `${box.width * 100}%`;
+                boundingBox.style.height = `${box.height * 100}%`;
+
+                video.parentElement.appendChild(boundingBox);
+            });
+        }
+    </script>
+</body>
+
+</html>

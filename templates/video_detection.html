@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Detection</title>
+    <link rel="stylesheet" href="/static/styles4.css">
+</head>
+
+<body>
+    <header>
+        <h1>Video Detection Result</h1>
+    </header>
+
+    <nav>
+        <a href="index_home.html">Home</a>
+    </nav>
+
+    <div id="content-container">
+        <form id="file-input-form" method="post" action="/detect_video" enctype="multipart/form-data" onsubmit="return detect(event)">
+            <div id="video-upload">
+                <label id="upload-video-label" for="file-input">Upload Video:</label>
+                <input type="file" id="file-input" name="file-input" accept="video/*" onchange="updatePreview()">
+            </div>
+
+            <!-- Preview container for video -->
+            <div id="preview-container" style="display: none;">
+                <p>Preview:</p>
+                <div id="preview-video-container">
+                    <video id="preview-video" controls width="320" height="180"></video>
+                </div>
+            </div>
+
+            <button type="submit">Detect</button>
+        </form>
+
+        <div id="result-container">
+            <!-- Result display for video -->
+            <div id="predicted-video">
+                <div id="predicted-text">Detected Video:</div>
+                <video id="result-video" controls width="320" height="180">
+                    <source src="{{ url_for('static', filename=result_video) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <div id="download-link">
+                    <a href="{{ url_for('static', filename=result_video) }}" download>Download Result</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function detect(event) {
+            // Trigger detection using JavaScript
+            // Prevent the form from submitting
+            event.preventDefault();
+
+            // Add your detection logic here
+
+            // Get the preview video element
+            var previewVideo = document.getElementById('preview-video');
+            var previewContainer = document.getElementById('preview-container');
+            var resultVideoContainer = document.getElementById('result-container');
+
+            // Check if the video is loaded
+            if (previewVideo.src) {
+                // If the video is loaded, show the preview container
+                previewContainer.style.display = 'block';
+
+                // If the video is loaded, submit the form
+                document.getElementById('file-input-form').submit();
+
+                // Show the result video container
+                resultVideoContainer.style.display = 'block';
+            } else {
+                // If the video is not loaded, show an error or handle it accordingly
+                alert('Please upload a valid video.');
+            }
+        }
+
+        function updatePreview() {
+            // Get the input element
+            var input = document.getElementById('file-input');
+
+            // Get the preview container and video elements
+            var previewContainer = document.getElementById('preview-container');
+            var previewVideo = document.getElementById('preview-video');
+
+            // Check if a file is selected
+            if (input.files && input.files[0]) {
+                // Get the selected file
+                var file = input.files[0];
+
+                // Reset previous previews
+                previewVideo.src = '';
+
+                // Create a FileReader to read the file
+                var reader = new FileReader();
+
+                // Set the callback function when the file is loaded
+                reader.onload = function (e) {
+                    // Check if the file is a video
+                    if (file.type.includes('video/')) {
+                        // Set the source of the preview video
+                        previewVideo.src = e.target.result;
+
+                        // Show the preview container
+                        previewContainer.style.display = 'block';
+                    }
+                };
+
+                // Read the file as a data URL (base64 encoded)
+                reader.readAsDataURL(file);
+            } else {
+                // Hide the preview container if no file is selected
+                previewContainer.style.display = 'none';
+            }
+        }
+
+        function updateResultPreview() {
+            // Get the input element
+            var input = document.getElementById('result-file-input');
+            // Get the preview container and video elements
+            var previewContainer = document.getElementById('preview-container');
+            var previewVideo = document.getElementById('preview-video');
+            // Check if a file is selected
+            if (input.files && input.files[0]) {
+                // Get the selected file
+                var file = input.files[0];
+
+                // Create a FileReader to read the file
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Set the source of the preview image
+                    previewVideo.src = e.target.result;
+
+                    // Show the preview container
+                    previewContainer.style.display = 'block';
+                };
+
+                // Read the file as a data URL (base64 encoded)
+                reader.readAsDataURL(file);
+            } else {
+                // Hide the preview container if no file is selected
+                previewContainer.style.display = 'none';
+            }
+        }
+
+    </script>
+</body>
+
+</html>

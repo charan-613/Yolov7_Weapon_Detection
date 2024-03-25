@@ -1,0 +1,163 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    color: white;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    margin-bottom: auto;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+nav a:hover {
+    color: #ff004f;
+}
+
+#content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the start */
+    padding: 20px; /* Add padding for spacing */
+}
+
+#video-upload {
+    width: 48%;
+    margin-right: 260px;
+}
+
+#file-input {
+    width: 100%;
+}
+
+#preview-container {
+    margin-top: 20px;
+    text-align: center; /* Center the content within the preview container */
+}
+
+#preview-video {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    display: inline-block; /* Display the video as inline-block to center it */
+}
+
+#result-container {
+    width: 48%; /* Adjust the width as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center the content within the result container */
+}
+
+#predicted-video {
+    text-align: center;
+}
+
+#result-video {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    display: inline-block; /* Display the video as inline-block to center it */
+}
+
+#download-link {
+    margin-top: 10px;
+}
+
+#prediction-result {
+    position: relative;
+}
+
+/* Add some margin to move the "Preview:" text towards the right */
+#preview-container p {
+    margin-left: 30px;
+}
+
+#predicted-text {
+    position: absolute;
+    top: 230px;
+    left: 735px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Adjust the layout for smaller screens */
+@media (max-width: 768px) {
+    #content-container {
+        flex-direction: column; /* Change to column layout on smaller screens */
+    }
+
+    #video-upload,
+    #result-container {
+        width: 100%; /* Take full width on smaller screens */
+        margin-right: 0; /* Remove margin */
+    }
+}
+
+button {
+    background-color: #555;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #d6004a;
+}
+
+#download-link a {
+    background-color: #555;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#download-link a:hover {
+    background-color: #d6004a;
+}

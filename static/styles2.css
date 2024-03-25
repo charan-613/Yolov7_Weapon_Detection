@@ -1,0 +1,188 @@
+        /* Add some margin to move the "Preview:" text towards the right */
+        #preview-container p {
+            margin-left: 30px;
+        }
+
+        #preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 0px;
+            margin-bottom: 16px;
+            margin-left: 70px;
+        }
+
+        .result-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 50px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            align-items: center;
+            margin-bottom: auto;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #ff004f;
+        }
+
+        #image-upload,
+        #url-input {
+            margin: 20px;
+            width: 60%;
+            max-width: 400px;
+            margin-right: 610px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #555;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            margin-left: 25px;
+        }
+
+        button:hover {
+            background-color: #d6004a;
+        }
+
+        #sample-images {
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .sample-image {
+            width: 223px;
+            height: 142px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        #prediction-result {
+            margin: 20px;
+            width: 60%;
+            max-width: 400px;
+            text-align: center;
+            float: right;
+            /* Float the result image to the right */
+        }
+
+        .sample-text {
+            color: whitesmoke;
+            text-decoration: underline;
+        }
+
+        #result-container {
+            display: flex;
+            /* Add a flex container to align preview and result side by side */
+        }
+
+        #content-container {
+            display: flex;
+            /* Add a flex container to align preview and result side by side */
+        }
+
+        #download-link a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #555;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 80px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #download-link a:hover {
+            background-color: #d6004a;
+        }
+
+        #prediction-result {
+            position: relative;
+        }
+
+        #predicted-text {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        #upload-image-label {
+
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+
+            z-index: 1;
+        }

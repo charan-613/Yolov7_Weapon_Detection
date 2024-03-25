@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Detection Result</title>
+    <link rel="stylesheet" href="/static/styles2.css">
+
+</head>
+
+<body>
+    <header>
+        <h1>Image Detection Result</h1>
+    </header>
+
+    <nav>
+        <a href="index_home.html">Home</a>
+    </nav>
+
+    <div id="content-container">
+        <form id="file-input-form" method="post" action="/detect" enctype="multipart/form-data">
+            <div id="image-upload">
+                <label id="upload-image-label" for="file-input">Upload Image:</label>
+                <input type="file" id="file-input" name="file-input" accept="image/*" onchange="updatePreviewImage()">
+            </div>
+
+            <!-- Preview image div -->
+            <div id="preview-container" style="display: none;">
+                <p>Preview:</p>
+                <div id="preview-image-container">
+                    <img id="preview-image" alt="Preview">
+                </div>
+            </div>
+
+            <button type="button" onClick="detect(event)">Detect</button>
+        </form>
+
+        <div id="result-container">
+            <div id="prediction-result">
+                <!-- Add a text overlay to the predicted image -->
+                <div id="predicted-text">Detected Image:</div>
+                <img class="result-image" src="{{ url_for('static', filename=result_image) }}" alt="Prediction Result">
+            </div>
+
+            <div id="download-link">
+                <a href="{{ url_for('static', filename=result_image) }}" download>Download Result</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="sample-images" style="height: 300px; overflow-y: auto;">
+        <div class="sample-container">
+            <p class="sample-text">Sample Output 1</p>
+            <img class="sample-image"
+                src="https://viso.ai/wp-content/uploads/2021/09/weapon-detection-deep-learning-ai.jpg"
+                alt="Sample 1"
+                onClick="loadSampleImage('https://viso.ai/wp-content/uploads/2021/09/weapon-detection-deep-learning-ai.jpg')">
+        </div>
+        <div class="sample-container">
+            <p class="sample-text">Sample Output 2</p>
+            <img class="sample-image"
+                src="https://d2c0db5b8fb27c1c9887-9b32efc83a6b298bb22e7a1df0837426.ssl.cf2.rackcdn.com/15668476-gun-detection-800x466.jpeg"
+                alt="Sample 2"
+                onClick="loadSampleImage('https://d2c0db5b8fb27c1c9887-9b32efc83a6b298bb22e7a1df0837426.ssl.cf2.rackcdn.com/15668476-gun-detection-800x466.jpeg')">
+        </div>
+        <div class="sample-container">
+            <p class="sample-text">Sample Output 3</p>
+            <img class="sample-image"
+                src="https://www.researchgate.net/publication/285039952/figure/fig2/AS:758069030051840@1557749149008/Correct-detection-example.ppm"
+                alt="Sample 3"
+                onClick="loadSampleImage('https://www.researchgate.net/publication/285039952/figure/fig2/AS:758069030051840@1557749149008/Correct-detection-example.ppm')">
+        </div>
+        <!-- Add more sample images as needed -->
+    </div>
+
+    <script>
+        function detect(event) {
+            // Trigger detection using JavaScript
+            // Prevent the form from submitting
+            event.preventDefault();
+    
+            // Add your detection logic here
+    
+            // Get the preview image element
+            var previewImage = document.getElementById('preview-image');
+    
+            // Check if the preview image is loaded
+            if (previewImage.complete) {
+                // If the image is already loaded, submit the form
+                document.getElementById('file-input-form').submit();
+            } else {
+                // If the image is not loaded, wait for the 'load' event
+                previewImage.onload = function () {
+                    // Submit the form when the image is loaded
+                    document.getElementById('file-input-form').submit();
+                };
+            }
+        }
+    
+        function loadSampleImage(imageUrl) {
+            // Open the provided imageUrl in a new tab or window
+            window.open(imageUrl, '_blank');
+        }
+    
+        function updatePreviewImage() {
+            // Get the input element
+            var input = document.getElementById('file-input');
+    
+            // Get the preview container and image elements
+            var previewContainer = document.getElementById('preview-container');
+            var previewImage = document.getElementById('preview-image');
+    
+            // Check if a file is selected
+            if (input.files && input.files[0]) {
+                // Get the selected file
+                var file = input.files[0];
+    
+                // Create a FileReader to read the file
+                var reader = new FileReader();
+    
+                // Set the callback function when the file is loaded
+                reader.onload = function (e) {
+                    // Set the source of the preview image
+                    previewImage.src = e.target.result;
+    
+                    // Show the preview container
+                    previewContainer.style.display = 'block';
+                };
+    
+                // Read the file as a data URL (base64 encoded)
+                reader.readAsDataURL(file);
+            } else {
+                // Hide the preview container if no file is selected
+                previewContainer.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
